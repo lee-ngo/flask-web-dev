@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{name}}{% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Flasky</a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="/">Home</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  {% if name %}
+  <h1>Hello, {{name}}!</h1>
+  {% else %}
+  <h1>Hello, Stranger!</h1>
+  {% endif %}
+  {% block page_content %}Below is this user's content.{% endblock %}
+</div>
+{% endblock %}
