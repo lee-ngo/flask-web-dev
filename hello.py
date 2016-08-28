@@ -1,7 +1,22 @@
 from flask import Flask, request, redirect, make_response, abort, render_template
 from flask_bootstrap import Bootstrap
+from flask_moment import Moment
+from datetime import datetime
+from flask_wtf import Form
+from wtforms import StringField, SubmitField
+from wtforms.validators import Required
+
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
+moment = Moment(app)
+app.config['SECRET_KEY'] = 'flasky'
+
+# new class for NameForm
+class NameForm(Form):
+    name = StringField('What is your name?', validators=[Required()])
+    submit = SubmitField('Submit')
+
+
 
 # @app.route('/')
 # def index():
@@ -33,7 +48,12 @@ def cookie():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    name = None
+    form = NameForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        form.name.data = ''
+    return render_template('index.html', form=form, name=name, current_time=datetime.utcnow())
 
 @app.route('/user/<name>')
 def user(name):
@@ -46,7 +66,6 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_service_error(e):
     return render_template('500.html'), 500
-
 
 if __name__ == '__main__':
     app.run(debug=True)
